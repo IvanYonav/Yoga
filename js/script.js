@@ -36,4 +36,48 @@ window.addEventListener('DOMContentLoaded', function () {
         }
 
     });
+
+//timer
+
+    let deadline = '2018-12-04';
+
+    function getTimeRemaining(endtime) {
+        let t = Date.parse(endtime) - Date.parse(new Date()),
+            seconds = Math.floor((t / 1000) % 60),
+            minutes = Math.floor((t / 1000 / 60) % 60),
+            hours = Math.floor((t / (1000 * 60 * 60)));
+
+        return {
+            'total': t,
+            'hours': hours,
+            'minutes': minutes,
+            'seconds': seconds
+        };
+    }
+    function timeFormat(time) {
+        return (time < 10) ? '0' + time : time;
+    }
+    function setClock(id, endtime) {
+        let timer = document.getElementById(id),
+        hours = timer.querySelector('.hours'),
+        minutes = timer.querySelector('.minutes'),
+        seconds = timer.querySelector('.seconds'),
+        timeInterval = setInterval(updateClock, 1000);
+
+        function updateClock() {
+            let t = getTimeRemaining(endtime);
+
+            hours.textContent = timeFormat(t.hours);
+            minutes.textContent = timeFormat(t.minutes);
+            seconds.textContent = timeFormat(t.seconds);
+
+            if (t.total <= 0) {
+                clearInterval(timeInterval);
+                timer.textContent = '00 : 00 : 00';
+            }
+
+        }
+
+    }
+    setClock('timer', deadline);
 });
