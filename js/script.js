@@ -37,12 +37,13 @@ window.addEventListener('DOMContentLoaded', function () {
 
     });
 
-//timer
+    //timer
 
     let deadline = '2018-12-04';
 
     function getTimeRemaining(endtime) {
-        let t = Date.parse(endtime) - Date.parse(new Date()),
+        let dateDiff = (new Date()).getTimezoneOffset() * 60 * 1000;
+        let t = Date.parse(endtime) - Date.parse(new Date()) + dateDiff,
             seconds = Math.floor((t / 1000) % 60),
             minutes = Math.floor((t / 1000 / 60) % 60),
             hours = Math.floor((t / (1000 * 60 * 60)));
@@ -54,15 +55,23 @@ window.addEventListener('DOMContentLoaded', function () {
             'seconds': seconds
         };
     }
+
     function timeFormat(time) {
-        return (time < 10) ? '0' + time : time;
+        let result = time;
+        if (time < 0) {
+            result = '00';
+        } else if (time < 10) {
+            result = '0' + time;
+        }
+        return result;
     }
+
     function setClock(id, endtime) {
         let timer = document.getElementById(id),
-        hours = timer.querySelector('.hours'),
-        minutes = timer.querySelector('.minutes'),
-        seconds = timer.querySelector('.seconds'),
-        timeInterval = setInterval(updateClock, 1000);
+            hours = timer.querySelector('.hours'),
+            minutes = timer.querySelector('.minutes'),
+            seconds = timer.querySelector('.seconds'),
+            timeInterval = setInterval(updateClock, 1000);
 
         function updateClock() {
             let t = getTimeRemaining(endtime);
@@ -73,11 +82,37 @@ window.addEventListener('DOMContentLoaded', function () {
 
             if (t.total <= 0) {
                 clearInterval(timeInterval);
-                timer.textContent = '00 : 00 : 00';
             }
 
         }
 
     }
     setClock('timer', deadline);
+
+    //modal
+
+    let more = document.querySelector('.more'),
+        overlay = document.querySelector('.overlay'),
+        close = document.querySelector('.popup-close'),
+        btnDescr = document.querySelectorAll('.description-btn');
+
+    more.addEventListener('click', function () {
+        overlay.style.display = 'block';
+        this.classList.add('more-splash');
+        document.body.style.overflow = "hidden";
+    });
+
+    close.addEventListener('click', function () {
+        overlay.style.display = 'none';
+        more.classList.remove('more-splash');
+        document.body.style.overflow = "";
+    });
+
+    for (let i = 0; i < btnDescr.length; i++) {
+        btnDescr[i].addEventListener('click', function () {
+            overlay.style.display = 'block';
+            this.classList.add('more-splash');
+            document.body.style.overflow = "hidden"
+        });
+    }
 });
