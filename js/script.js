@@ -1,11 +1,13 @@
-window.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('DOMContentLoaded', () => {
     'use strict';
 
     let tab = document.querySelectorAll('.info-header-tab'),
         info = document.querySelector('.info-header'),
         tabContent = document.querySelectorAll('.info-tabcontent');
 
-    function hideTabContent(a) {
+
+
+    let hideTabContent = (a) => {
         for (let i = a; i < tabContent.length; i++) {
             tabContent[i].classList.remove('show');
             tabContent[i].classList.add('hide');
@@ -14,14 +16,14 @@ window.addEventListener('DOMContentLoaded', function () {
 
     hideTabContent(1);
 
-    function showTabContent(b) {
+    let showTabContent = (b) => {
         if (tabContent[b].classList.contains('hide')) {
             tabContent[b].classList.remove('hide');
             tabContent[b].classList.add('show');
         }
     }
 
-    info.addEventListener('click', function (event) {
+    info.addEventListener('click', (event) => {
         let target = event.target;
         if (target && target.classList.contains('info-header-tab')) {
             for (let i = 0; i < tab.length; i++) {
@@ -39,9 +41,9 @@ window.addEventListener('DOMContentLoaded', function () {
 
     //timer
 
-    let deadline = '2018-12-04';
+    let deadline = '2018-12-05';
 
-    function getTimeRemaining(endtime) {
+    let getTimeRemaining = (endtime) => {
         let dateDiff = (new Date()).getTimezoneOffset() * 60 * 1000;
         let t = Date.parse(endtime) - Date.parse(new Date()) + dateDiff,
             seconds = Math.floor((t / 1000) % 60),
@@ -56,7 +58,7 @@ window.addEventListener('DOMContentLoaded', function () {
         };
     }
 
-    function timeFormat(time) {
+    let timeFormat = (time) => {
         let result = time;
         if (time < 0) {
             result = '00';
@@ -66,7 +68,7 @@ window.addEventListener('DOMContentLoaded', function () {
         return result;
     }
 
-    function setClock(id, endtime) {
+    let setClock = (id, endtime) => {
         let timer = document.getElementById(id),
             hours = timer.querySelector('.hours'),
             minutes = timer.querySelector('.minutes'),
@@ -96,20 +98,20 @@ window.addEventListener('DOMContentLoaded', function () {
         close = document.querySelector('.popup-close'),
         btnDescr = document.querySelectorAll('.description-btn');
 
-    more.addEventListener('click', function () {
+    more.addEventListener('click',() => {
         overlay.style.display = 'block';
         this.classList.add('more-splash');
         document.body.style.overflow = "hidden";
     });
 
-    close.addEventListener('click', function () {
+    close.addEventListener('click', () => {
         overlay.style.display = 'none';
         more.classList.remove('more-splash');
         document.body.style.overflow = "";
     });
 
     for (let i = 0; i < btnDescr.length; i++) {
-        btnDescr[i].addEventListener('click', function () {
+        btnDescr[i].addEventListener('click', () => {
             overlay.style.display = 'block';
             this.classList.add('more-splash');
             document.body.style.overflow = "hidden"

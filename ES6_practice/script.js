@@ -5,15 +5,17 @@ class Options {
         this.bg = bg;
         this.fontSize = fontSize;
         this.textAlign = textAlign;
+
     }
     createDiv(text) {
         let div = document.createElement('div');
         div.textContent = text;
-        div.style.cssText = `height : ${this.height} px; width : ${this.width} px; background-color : ${this.bg}; font-size : ${this.fontSize} px; text-align : ${this.textAligntext} `;
-        }
+        div.style.cssText = `height: ${this.height}px; width: ${this.width}px;background-color: ${this.bg}; font-size: ${this.fontSize}px; text-align: ${this.textAlign}`;
+        return div;
+    }
 
 }
+let newElement = new Options(200, 200, 'green', 24, 'center');
 
-let newelement = new Options(200, 200, green, 24, center);
+document.body.appendChild(newElement.createDiv('Текст'));
 
-console.log(newEl);
