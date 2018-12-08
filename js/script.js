@@ -130,17 +130,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
     let form = document.getElementsByClassName('main-form')[0],
         contactForm = document.getElementById('form'),
-        input = document.getElementsByTagName('input'),
         statusMessage = document.createElement('div');
     statusMessage.classList.add('status');
-    statusMessage.style.cssText = ('color: #fff');
+    // statusMessage.style.cssText = ('color: #fff');
 
 
     function sendForm(element) {
         element.addEventListener('submit', function (event) {
             event.preventDefault();
             element.appendChild(statusMessage);
-            let formData = new FormData(element);
+            let formData = new FormData(element),
+                input = element.getElementsByTagName('input');
+
 
             function postData(data) {
 
@@ -158,7 +159,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         } else {
                             reject();
                         }
-                        
+
                         let obj = {};
                         formData.forEach(function (value, key) {});
                         let json = JSON.stringify(obj);
@@ -199,4 +200,103 @@ window.addEventListener('DOMContentLoaded', () => {
     function checkPhone(text) {
         return /^(\+|8)\d{0,10}$/.test(text);
     }
+
+    //слайдер
+
+    let slideIndex = 1,
+        slides = document.querySelectorAll('.slider-item'),
+        prev = document.querySelector('.prev'),
+        next = document.querySelector('.next'),
+        dotsWrap = document.querySelector('.slider-dots'),
+        dots = document.querySelectorAll('.dot');
+
+    showSlides(slideIndex);
+
+    function showSlides(n) {
+
+        if (n > slides.length) {
+            slideIndex = 1;
+        }
+        if (n < 1) {
+            slideIndex = slides.length;
+        }
+
+        slides.forEach((item) => item.style.display = 'none');
+
+        dots.forEach((item) => item.classList.remove('dot-active'));
+
+        slides[slideIndex - 1].style.display = 'block';
+        dots[slideIndex - 1].classList.add('dot-active');
+    }
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    prev.addEventListener('click', function () {
+        plusSlides(-1);
+    });
+
+    next.addEventListener('click', function () {
+        plusSlides(1);
+    });
+
+    dotsWrap.addEventListener('click', function (event) {
+        for (let i = 0; i < dots.length + 1; i++) {
+            if (event.target.classList.contains('dot') && event.target == dots[i - 1]) {
+                currentSlide(i);
+            }
+        }
+    });
+
+    //calc
+    let persons = document.querySelectorAll('.counter-block-input')[0],
+        restDays = document.querySelectorAll('.counter-block-input')[1],
+        place = document.getElementById('select'),
+        totalValue = document.getElementById('total');
+
+    totalValue.innerHTML = 0;
+
+    persons.addEventListener('change', function () {
+        sum(restDays, persons, place);
+    });
+
+    function sum(days, pers, location) {
+        let day = +days.value,
+            people = +pers.value,
+            loc = +location.options[location.selectedIndex].value;
+        if (day && people) {
+            totalValue.innerHTML = (day + people) * 4000 * loc;
+        } else {
+            totalValue.innerHTML = 0;
+        }
+    }
+
+    restDays.addEventListener('change', function () {
+        sum(restDays, persons, place);
+    });
+
+    place.addEventListener('change', function () {
+        sum(restDays, persons, place);
+    });
+
+    let inputCounter = document.querySelectorAll('.counter-block-input');
+
+    inputCounter.forEach(function (item) {
+        item.removeAttribute('type');
+        item.addEventListener('input', function () {
+            if (!checkCalc(item.value)) {
+                item.value = item.value.slice(0, -1);
+            }
+        });
+    });
+
+    function checkCalc(text) {
+        return /^\d+$/.test(text);
+    };
+
 });
