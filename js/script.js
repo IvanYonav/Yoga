@@ -98,7 +98,7 @@ window.addEventListener('DOMContentLoaded', () => {
         close = document.querySelector('.popup-close'),
         btnDescr = document.querySelectorAll('.description-btn');
 
-    function showModal () {
+    function showModal() {
         overlay.style.display = 'block';
         this.classList.add('more-splash');
         document.body.style.overflow = "hidden";
@@ -128,98 +128,75 @@ window.addEventListener('DOMContentLoaded', () => {
         faliure: 'Что-то пошло не так...'
     };
 
-    let form = document.querySelector('.main-form'),
-        input = form.getElementsByTagName('input'),
+    let form = document.getElementsByClassName('main-form')[0],
+        contactForm = document.getElementById('form'),
+        input = document.getElementsByTagName('input'),
         statusMessage = document.createElement('div');
-
     statusMessage.classList.add('status');
-
-    form.addEventListener('submit', function (event) {
-        event.preventDefault();
-        form.appendChild(statusMessage);
+    statusMessage.style.cssText = ('color: #fff');
 
 
-        let request = new XMLHttpRequest();
-        request.open('POST', 'server.php');
-        request.setRequestHeader('Content-type', 'application/json', 'charset=utf-8');
+    function sendForm(element) {
+        element.addEventListener('submit', function (event) {
+            event.preventDefault();
+            element.appendChild(statusMessage);
+            let formData = new FormData(element);
 
-        let formData = new FormData(form);
+            function postData(data) {
 
-        let obj = {};
-        formData.forEach(function (value, key) {
-            obj[key] = value;
-        });
-        let json = JSON.stringify(obj);
+                return new Promise(function (resolve, reject) {
 
-        request.send(json);
+                    let request = new XMLHttpRequest();
+                    request.open('POST', 'server.php');
+                    request.setRequestHeader('Content-type', 'application/json', 'charset=utf-8');
 
-        request.addEventListener('readystatechange', function () {
-            if (request.readyState < 4) {
-                statusMessage.innerHTML = massage.loading;
-            } else if (request.readyState === 4 && request.status == 200) {
-                statusMessage.innerHTML = massage.success;
-            } else {
-                statusMessage.innerHTML = massage.faliure;
+                    request.addEventListener('readystatechange', function () {
+                        if (request.readyState < 4) {
+                            resolve();
+                        } else if (request.readyState === 4 && request.status == 200) {
+                            resolve();
+                        } else {
+                            reject();
+                        }
+                        
+                        let obj = {};
+                        formData.forEach(function (value, key) {});
+                        let json = JSON.stringify(obj);
+                    });
+
+                    request.send(data);
+                });
+            } //end postData
+            postData(formData)
+                .then(() => statusMessage.innerHTML = massage.loading)
+                .then(() => statusMessage.innerHTML = massage.success)
+                .catch(() => statusMessage.innerHTML = massage.faliure)
+                .then(clearInput);
+
+            function clearInput() {
+                for (let i = 0; i < input.length; i++) {
+                    input[i].value = '';
+                }
             }
         });
-        for (let i = 0; i < input.length; i++) {
-            input[i].value = '';
-        }
-    });
+    }
 
-    //contact form
+    sendForm(form);
+    sendForm(contactForm);
 
-    let contactForm = document.getElementById('form'),
-        contactInput = contactForm.getElementsByClassName('form-Input'),
-        inputPhones = document.querySelectorAll('[type = tel]');
+    //валидация по номеру телефона
+
+    let inputPhones = document.querySelectorAll('[type = tel]');
 
     inputPhones.forEach(function (item) {
         item.addEventListener('input', function () {
             if (!checkPhone(item.value)) {
                 item.value = item.value.slice(0, -1);
             }
-
         });
-
-    });
-
-
-    contactForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-        contactForm.appendChild(statusMessage);
-        statusMessage.style.cssText = ('color: #c78030');
-
-        let request = new XMLHttpRequest();
-        request.open('POST', 'server.php');
-        request.setRequestHeader('Content-type', 'application/json', 'charset=utf-8');
-
-        let formData = new FormData(contactForm);
-
-        let obj = {};
-        formData.forEach(function (value, key) {
-            obj[key] = value;
-        });
-
-        let json = JSON.stringify(obj);
-
-        request.send(json);
-
-        request.addEventListener('readystatechange', function () {
-            if (request.readyState < 4) {
-                statusMessage.innerHTML = massage.loading;
-            } else if (request.readyState === 4 && request.status == 200) {
-                statusMessage.innerHTML = massage.success;
-            } else {
-                statusMessage.innerHTML = massage.faliure;
-            }
-        });
-        for (let i = 0; i < contactInput.length; i++) {
-            contactInput[i].value = '';
-        }
     });
 
     function checkPhone(text) {
         return /^(\+|8)\d{0,10}$/.test(text);
     }
-
 });
