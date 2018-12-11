@@ -1,16 +1,16 @@
-function modal() {
+let modal = () => {
     let more = document.querySelector('.more'),
         overlay = document.querySelector('.overlay'),
         close = document.querySelector('.popup-close'),
         btnDescr = document.querySelectorAll('.description-btn');
 
-    function showModal() {
+    let showModal = () => {
         overlay.style.display = 'block';
         this.classList.add('more-splash');
         document.body.style.overflow = "hidden";
-    }
+    };
 
-    more.addEventListener('click', function () {
+    more.addEventListener('click', () => {
         showModal.call(this);
     });
 
@@ -21,9 +21,9 @@ function modal() {
     });
 
     for (let i = 0; i < btnDescr.length; i++) {
-        btnDescr[i].addEventListener('click', function () {
+        btnDescr[i].addEventListener('click', () => {
             showModal.call(this);
         });
     }
-}
+};
 export default modal;

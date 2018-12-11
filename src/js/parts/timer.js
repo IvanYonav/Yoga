@@ -1,4 +1,4 @@
-function timer() {
+let timer = () => {
     let deadline = '2018-12-16';
 
     let getTimeRemaining = (endtime) => {
@@ -48,5 +48,5 @@ function timer() {
 
     };
     setClock('timer', deadline);
-}
+};
 export default timer;

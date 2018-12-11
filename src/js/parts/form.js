@@ -1,4 +1,4 @@
-function form() {
+let form = () => {
     let massage = {
         loading: 'Загрузка...',
         success: 'Спасибо! Скоро мы с вами свяжемся!',
@@ -12,23 +12,23 @@ function form() {
     statusMessage.style.cssText = ('color: #fff');
 
 
-    function sendForm(element) {
-        element.addEventListener('submit', function (event) {
+    let sendForm = (element) => {
+        element.addEventListener('submit', (event) => {
             event.preventDefault();
             element.appendChild(statusMessage);
             let formData = new FormData(element),
                 input = element.getElementsByTagName('input');
 
 
-            function postData(data) {
+            let postData = (data) => {
 
-                return new Promise(function (resolve, reject) {
+                return new Promise((resolve, reject) => {
 
                     let request = new XMLHttpRequest();
                     request.open('POST', 'server.php');
                     request.setRequestHeader('Content-type', 'application/json', 'charset=utf-8');
 
-                    request.addEventListener('readystatechange', function () {
+                    request.addEventListener('readystatechange', () => {
                         if (request.readyState < 4) {
                             resolve();
                         } else if (request.readyState === 4 && request.status == 200) {
@@ -38,43 +38,48 @@ function form() {
                         }
 
                         let obj = {};
-                        formData.forEach(function (value, key) {});
+                        formData.forEach((value, key) => { });
                         let json = JSON.stringify(obj);
                     });
 
                     request.send(data);
                 });
-            }
+            };
             postData(formData)
                 .then(() => statusMessage.innerHTML = massage.loading)
                 .then(() => statusMessage.innerHTML = massage.success)
                 .catch(() => statusMessage.innerHTML = massage.faliure)
                 .then(clearInput);
 
+
             function clearInput() {
                 for (let i = 0; i < input.length; i++) {
                     input[i].value = '';
+                    setTimeout(() => {
+                        statusMessage.innerHTML = "";
+                    }, 3000);
                 }
             }
+
         });
-    }
+    };
 
     sendForm(form);
     sendForm(contactForm);
 
     let inputPhones = document.querySelectorAll('[type = tel]');
 
-    inputPhones.forEach(function (item) {
-        item.addEventListener('input', function () {
+    inputPhones.forEach((item) => {
+        item.addEventListener('input', () => {
             if (!checkPhone(item.value)) {
                 item.value = item.value.slice(0, -1);
             }
         });
     });
 
-    function checkPhone(text) {
-        return /^(\+|8)\d{0,10}$/.test(text);
-    }
-}
+    let checkPhone = (text) => /^(\+|8)\d{0,10}$/.test(text);
+
+};
+
 
 export default form;
