@@ -266,7 +266,7 @@
 /*!*******************************!*\
   !*** ./src/js/parts/modal.js ***!
   \*******************************/
-/*! exports provided: default */function(e,o,s){"use strict";s.r(o);var u=void 0;o.default=function(){var e=document.querySelector(".more"),o=document.querySelector(".overlay"),s=document.querySelector(".popup-close"),t=document.querySelectorAll(".description-btn"),n=function(){o.style.display="block",u.classList.add("more-splash"),document.body.style.overflow="hidden"};e.addEventListener("click",function(){n.call(u)}),s.addEventListener("click",function(){o.style.display="none",e.classList.remove("more-splash"),document.body.style.overflow=""});for(var r=0;r<t.length;r++)t[r].addEventListener("click",function(){n.call(u)})}},"./src/js/parts/slider.js":
+/*! exports provided: default */function(e,o,s){"use strict";s.r(o),o.default=function(){var e=document.querySelector(".more"),o=document.querySelector(".overlay"),s=document.querySelector(".popup-close"),t=document.querySelectorAll(".description-btn");function n(){o.style.display="block",this.classList.add("more-splash"),document.body.style.overflow="hidden"}e.addEventListener("click",function(){n.call(this)}),s.addEventListener("click",function(){o.style.display="none",e.classList.remove("more-splash"),document.body.style.overflow=""});for(var r=0;r<t.length;r++)t[r].addEventListener("click",function(){n.call(this)})}},"./src/js/parts/slider.js":
 /*!********************************!*\
   !*** ./src/js/parts/slider.js ***!
   \********************************/
